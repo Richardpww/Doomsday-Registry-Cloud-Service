@@ -6,10 +6,10 @@ from flask import Flask, jsonify, request, render_template
 
 app = Flask(__name__)
 
-CRITICAL_STOCK = 5        # stok <= 5 dianggap KRITIS
-MAX_DECREASE = 20         # stok hanya boleh turun maksimal 20 per update
+CRITICAL_STOCK = 5        
+MAX_DECREASE = 20         
 MAX_STOCK = 100000
-SUPPLIER_MIN_LEVEL = 2    # level akses minimal untuk melihat nama supplier
+SUPPLIER_MIN_LEVEL = 2    
 
 SEED = [
     ("makanan", "Beras Premium 5kg", "UD Tani Makmur", "Beras pulen kemasan 5 kg", 40),
@@ -115,7 +115,7 @@ def health():
         return jsonify(status="db_unreachable"), 503
 
 
-# ---------- CREATE ----------
+#Create
 @app.post("/api/products")
 def create_product():
     d = request.get_json(silent=True) or {}
@@ -143,7 +143,7 @@ def create_product():
     return resp
 
 
-# ---------- READ (list) ----------
+#Read list
 @app.get("/api/products")
 def list_products():
     sql, params = "SELECT * FROM products WHERE 1=1", []
@@ -162,7 +162,7 @@ def list_products():
     return jsonify([view(r, lv) for r in rows]), 200
 
 
-# ---------- READ (stok kritis) ----------
+#Read kritikal stok
 @app.get("/api/products/low-stock")
 def low_stock():
     with get_conn() as conn:
@@ -174,7 +174,7 @@ def low_stock():
     return jsonify([view(r, lv) for r in rows]), 200
 
 
-# ---------- READ (one) ----------
+#Read one
 @app.get("/api/products/<int:pid>")
 def get_product(pid):
     with get_conn() as conn:
@@ -186,7 +186,7 @@ def get_product(pid):
     return jsonify(view(row, get_level())), 200
 
 
-# ---------- UPDATE ----------
+#update
 @app.patch("/api/products/<int:pid>")
 def update_product(pid):
     d = request.get_json(silent=True) or {}
@@ -216,7 +216,7 @@ def update_product(pid):
     return jsonify(view(row2, get_level())), 200
 
 
-# ---------- DELETE (soft delete) ----------
+#delete
 @app.delete("/api/products/<int:pid>")
 def delete_product(pid):
     with get_conn() as conn:
@@ -230,7 +230,7 @@ def delete_product(pid):
     return "", 204
 
 
-# ---------- Ekstra ----------
+#Misc
 @app.get("/api/products/<int:pid>/history")
 def history(pid):
     with get_conn() as conn:
