@@ -22,13 +22,17 @@ I chose this project because many small shops in Indonesia (UMKM) still track th
 ## Dokumentation
 ![docker compose ps](pics/p1.png)
 *App Homepage*
+<br>
+
 ![docker compose ps](pics/p2.png)
 ![docker compose ps](pics/p3.png)
 *Docker Compose Yml*
+<br>
 
 ![docker compose ps](pics/p4.png)
 ![docker compose ps](pics/p5.png)
 *Dockerfile*
+<br>
 
 ---
 
