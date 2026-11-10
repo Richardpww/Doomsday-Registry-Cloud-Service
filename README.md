@@ -20,18 +20,21 @@ To stop, use 'docker compose down' (keep data) or 'docker compose down -v' (Dele
 I chose this project because many small shops in Indonesia (UMKM) still track their stock in notebooks, so they often find out an item is gone only when a customer asks for it. I wanted to build something simple that solves a real problem. I also made it in docker comtainer so it easier to move around and open in another platform.
 
 ## Dokumentation
-![docker compose ps](pics/p1.png)<br>
+![docker compose ps](pics/p1.png)<br><br>
 *App Homepage*
+<br>
 <br>
 
 ![docker compose ps](pics/p2.png)
-![docker compose ps](pics/p3.png)<br>
+![docker compose ps](pics/p3.png)<br><br>
 *Docker Compose Yml*
+<br>
 <br>
 
 ![docker compose ps](pics/p4.png)
-![docker compose ps](pics/p5.png)<br>
+![docker compose ps](pics/p5.png)<br><br>
 *Dockerfile*
+<br>
 <br>
 
 ---
