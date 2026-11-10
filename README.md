@@ -7,7 +7,7 @@ This is a simple web app and REST API that helps small shop owners track their p
 ## Run Guide
 
 git clone <URL-REPO-ANDA><br>
-cd inventaris-umkm<br>
+cd Doomsday-Registry-Cloud-Service<br>
 cp .env.example .env<br>
 docker compose up -d --build
 
