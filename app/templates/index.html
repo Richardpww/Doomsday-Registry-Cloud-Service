@@ -1,198 +1,31 @@
 <!doctype html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Inventaris UMKM</title>
-  <style>
-    :root {
-      --bg: #121212;
-      --card-bg: #121212;
-      --text: #ffffff;
-      --muted: #aaaaaa;
-      --border: #ffffff;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Courier New', Courier, monospace;
-      background-color: var(--bg);
-      color: var(--text);
-      max-width: 760px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-    }
-
-    h1 {
-      font-size: 1.5rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 1rem;
-      border-bottom: 2px solid var(--border);
-      padding-bottom: 0.5rem;
-    }
-
-    p {
-      margin-bottom: 1rem;
-      font-size: 0.9rem;
-    }
-
-    fieldset {
-      background: var(--card-bg);
-      border: 2px solid var(--border);
-      padding: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    legend {
-      font-weight: bold;
-      text-transform: uppercase;
-      padding: 0 0.5rem;
-      background: var(--bg);
-      color: #ffffff;
-      border: 1px solid var(--border);
-    }
-
-    input {
-      font-family: inherit;
-      font-size: 0.85rem;
-      padding: 0.4rem 0.6rem;
-      border: 1px solid var(--border);
-      background: #1e1e1e;
-      color: #ffffff;
-      margin-right: 0.4rem;
-      margin-bottom: 0.4rem;
-      outline: none;
-    }
-
-    input:focus {
-      background: #2a2a2a;
-    }
-
-    button {
-      font-family: inherit;
-      font-size: 0.85rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      background-color: transparent;
-      color: #ffffff;
-      border: 1px solid var(--border);
-      padding: 0.4rem 0.8rem;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #ffffff;
-      color: #000000;
-    }
-
-    #msg {
-      font-size: 0.85rem;
-      margin-bottom: 1rem;
-      padding: 0.5rem;
-      border: 1px dashed var(--border);
-      display: empty-none;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    li {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      padding: 0.8rem;
-      margin-bottom: 0.5rem;
-      font-size: 0.85rem;
-      line-height: 1.4;
-    }
-
-    .badge-kritis {
-      border: 1px solid #ffffff;
-      padding: 0.1rem 0.4rem;
-      font-weight: bold;
-      background: #ffffff;
-      color: #000000;
-    }
-
-    .action-btn {
-      margin-top: 0.5rem;
-      display: inline-block;
-    }
-
-    .action-btn button {
-      padding: 0.2rem 0.5rem;
-      font-size: 0.75rem;
-      margin-right: 0.2rem;
-    }
-  </style>
+  <title>UMKM Inventory</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <h1>Inventaris UMKM</h1>
+  <h1>UMKM Inventory</h1>
   <p>
-    Level akses: <input id="lvl" type="number" min="0" max="3" value="0" style="width:60px">
-    <button onclick="load()">Muat ulang</button><br>
-    <small style="color: var(--muted);">(((0) Supplier Hidden, (3) Show Supplier))</small>
+    Access level: <input id="lvl" type="number" min="0" max="3" value="0" style="width:60px">
+    <button onclick="load()">Reload</button><br>
+    <small class="hint">(0-1 = supplier hidden, 2-3 = supplier visible)</small>
   </p>
-  
+
   <fieldset>
-    <legend>Tambah produk</legend>
-    <input id="cat" placeholder="Kategori">
-    <input id="name" placeholder="Nama produk">
+    <legend>Add product</legend>
+    <input id="cat" placeholder="Category">
+    <input id="name" placeholder="Product name">
     <input id="sup" placeholder="Supplier">
-    <input id="desc" placeholder="Deskripsi">
-    <input id="stock" type="number" min="0" placeholder="Stok" style="width:80px">
-    <button onclick="add()">Tambah</button>
+    <input id="desc" placeholder="Description">
+    <input id="stock" type="number" min="0" placeholder="Stock" style="width:80px">
+    <button onclick="add()">Add</button>
   </fieldset>
 
   <p id="msg"></p>
   <ul id="list"></ul>
 
-  <script>
-    const $ = id => document.getElementById(id);
-    const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-    const hdr = () => ({'X-Access-Level': $('lvl').value, 'Content-Type': 'application/json'});
-    
-    async function load() {
-      const rows = await (await fetch('/api/products', {headers: hdr()})).json();
-      $('list').innerHTML = rows.map(p => `<li>
-        [${esc(p.category)}] <b>${esc(p.name)}</b> — supplier: ${esc(p.supplier)} —
-        stok ${p.stock} ${p.stock_status === 'KRITIS' ? '<span class="badge-kritis">⚠️ KRITIS</span>' : ''}
-        <div class="action-btn">
-          <button onclick="setStock(${p.id}, ${p.stock})">Ubah stok</button>
-          <button onclick="del(${p.id})">Hapus</button>
-        </div>
-      </li>`).join('');
-    }
-
-    async function add() {
-      const r = await fetch('/api/products', {method:'POST', headers: hdr(),
-        body: JSON.stringify({category:$('cat').value, name:$('name').value,
-          supplier:$('sup').value, description:$('desc').value,
-          stock: parseInt($('stock').value, 10)})});
-      $('msg').textContent = r.status + ' ' + JSON.stringify(await r.json());
-      load();
-    }
-
-    async function setStock(id, cur) {
-      const v = prompt('Stok baru:', cur);
-      if (v === null) return;
-      const r = await fetch('/api/products/' + id, {method:'PATCH', headers: hdr(),
-        body: JSON.stringify({stock: parseInt(v, 10)})});
-      $('msg').textContent = r.status + ' ' + JSON.stringify(await r.json());
-      load();
-    }
-
-    async function del(id) { 
-      await fetch('/api/products/' + id, {method:'DELETE'}); 
-      load(); 
-    }
-
-    load();
-  </script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
