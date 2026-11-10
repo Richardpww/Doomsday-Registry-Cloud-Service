@@ -6,9 +6,9 @@ This is a simple web app and REST API that helps small shop owners track their p
 
 ## Run Guide
 
-git clone <URL-REPO-ANDA>
-cd inventaris-umkm
-cp .env.example .env
+git clone <URL-REPO-ANDA><br>
+cd inventaris-umkm<br>
+cp .env.example .env<br>
 docker compose up -d --build
 
 Open http://localhost:8000
