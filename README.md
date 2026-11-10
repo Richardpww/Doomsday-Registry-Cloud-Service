@@ -4,7 +4,6 @@
 
 This is a simple web app and REST API that helps small shop owners track their product stock. Users can add products and update stock, and any item with 5 or fewer units is automatically marked as critical. Supplier names are hidden unless the user has a high enough access level, stock cannot drop by more than 20 at once, and deleted products are only soft-deleted with every change saved in an audit log. The project is built with Flask and PostgreSQL, and runs fully in containers using Docker Compose.
 
----
 
 ## Run Guide
 
