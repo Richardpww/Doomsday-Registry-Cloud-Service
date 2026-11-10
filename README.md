@@ -21,14 +21,16 @@ I chose this project because many small shops in Indonesia (UMKM) still track th
 
 ## Dokumentation
 ![docker compose ps](pics/p1.png)
-App Homepage
+*App Homepage*
 ![docker compose ps](pics/p2.png)
 ![docker compose ps](pics/p3.png)
-Docker Compose Yml
+*Docker Compose Yml*
 
 ![docker compose ps](pics/p4.png)
 ![docker compose ps](pics/p5.png)
-Dockerfile
+*Dockerfile*
+
+---
 
 - Article: [Article Link](https://rodiego.netlify.app/inventoris)
 - Demo video: [Youtube Link](https://youtu.be/1C-Er72Q9bc)
